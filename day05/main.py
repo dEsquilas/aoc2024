@@ -19,7 +19,7 @@ def read_input(filename):
     return orders, to_print
 
 
-def day_3(filename):
+def day_5(filename):
 
     orders, to_print = read_input(filename)
     t1 = 0
@@ -65,13 +65,13 @@ def rebuild_order(orders, prints):
 
     return rebuilded
 
-def test_day_3():
-    assert day_3("test.txt") == (143, 123)
+def test_day_5():
+    assert day_5("test.txt") == (143, 123)
 
 
-test_day_3()
+test_day_5()
 
-p1, p2 = day_3("input.txt")
+p1, p2 = day_5("input.txt")
 
 print("Part 1: ", p1)
 print("Part 2: ", p2)
