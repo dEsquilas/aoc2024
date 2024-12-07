@@ -12,7 +12,6 @@ def day_7(filename):
         result = int(equation.split(":")[0])
         items = [int(x) for x in equation.split(":")[1].strip().split(" ")]
 
-        # Part 1: Solve with operators "+", "*"
         result_found_p1 = False
         for ops in product(operators_p1, repeat=len(items) - 1):
             expression = str(items[0])
@@ -27,7 +26,6 @@ def day_7(filename):
         if result_found_p1:
             total_p1 += result
 
-        # Part 2: Solve with operators "+", "*", "|"
         result_found_p2 = False
         for ops in product(operators_p2, repeat=len(items) - 1):
             expression = str(items[0])
@@ -48,12 +46,10 @@ def day_7(filename):
     return total_p1, total_p2
 
 def test_day_7():
-    # Test for Part 1 and Part 2
     assert day_7("test.txt") == (3749, 11387)
 
 test_day_7()
 
-# Uncomment for actual input
 p1, p2 = day_7("input.txt")
 print("Part 1: ", p1)
 print("Part 2: ", p2)
