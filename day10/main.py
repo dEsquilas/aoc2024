@@ -1,9 +1,7 @@
 from itertools import product
 
 def read_input(filename):
-	map = [[-1 if c == "." else int(c) for c in line] for line in open(filename).read().splitlines()]
-	
-	return map
+	return [[-1 if c == "." else int(c) for c in line] for line in open(filename).read().splitlines()]
 
 def validate_node(node, map):
 	w = len(map[0])
@@ -14,16 +12,14 @@ def validate_node(node, map):
 	else:
 		return False
 
-def navigate_next_node(map, visited, current):
+def navigate_next_node(map, visited, current, p1 = True):
 
 	directions = [(0, 1), (0, -1), (1, 0), (-1, 0)]
 	paths = []
 	current_value = map[current[0]][current[1]]
 	visited.add(current)
 
-	#print(current, " -> ", current_value)
-
-	if current_value == 5:
+	if current_value == 9:
 		return [[current]]
 
 	for d in directions:
@@ -35,7 +31,12 @@ def navigate_next_node(map, visited, current):
 				next_node_value == current_value + 1 and
 				next_node not in visited
 		):
-			new_paths = navigate_next_node(map, visited, next_node)
+			if p1:
+				new_paths = navigate_next_node(map, visited, next_node)
+			if not p1:
+				new_visited = visited.copy()
+				new_paths = navigate_next_node(map, new_visited, next_node, False)
+
 			if new_paths != False:
 				for p in new_paths:
 					paths.append(p)
@@ -49,8 +50,6 @@ def navigate_next_node(map, visited, current):
 	return paths
 
 
-
-
 def day_10(filename):
 
 	map = read_input(filename)
@@ -60,23 +59,20 @@ def day_10(filename):
 		if map[y][x] == 0:
 			zeros.add((y, x))
 
-	t = 0
+	t1 = 0
+	t2 = 0
 	for zero in zeros:
-		paths = navigate_next_node(map, set(), zero)
-		print("Paths founded")
-		for p in paths:
-			print(p)
-		t += len(paths)
+		paths_p1 = navigate_next_node(map, set(), zero)
+		paths_p2 = navigate_next_node(map, set(), zero, False)
+		t1 += len(paths_p1)
+		t2 += len(paths_p2)
 
-	return t,0
-#
-# def test_day_10():
-# 	assert day_10("test.txt") == (36, 0)
-#
-# test_day_10()
-# #
-# p1, p2 = day_10("input.txt")
-# print("Part 1: ", p1)
-# print("Part 2: ", p2)
+	return t1,t2
 
-print(day_10("test2.txt"))
+def test_day_10():
+	assert day_10("test.txt") == (36, 81)
+
+test_day_10()
+p1, p2 = day_10("input.txt")
+print("Part 1: ", p1)
+print("Part 2: ", p2)
